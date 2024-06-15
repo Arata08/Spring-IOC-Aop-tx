@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="org.example"/>
+
+
+    <context:property-placeholder location="jdbc.properties"/>
+    <!--第三方的类依然使用bean标签配置
+        new DruidDataSource-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="url" value="${mm.url}"/>
+        <property name="driverClassName" value="${mm.driver}"/>
+        <property name="username" value="${mm.username}"/>
+        <property name="password" value="${mm.password}"/>
+    </bean>
+
+    <!--JdbcTemplate 是 Spring 框架中用于简化 JDBC 编程的类，提供了方便的数据访问操作方法，同时减少了样板式代码的编写。JdbcTemplate
+    在执行数据库操作时处理了一些繁琐的细节，如连接管理、资源释放、异常处理等，使得开发者能够更专注于业务逻辑而不是处理 JDBC 的底层细节。-->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+</beans>
